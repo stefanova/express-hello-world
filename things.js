@@ -2,16 +2,20 @@ var express = require('express');
 var router = express.Router();
 
 
-//Middleware
-router.use('/things',function(req, res, next){
-    console.log("2 A new request received at " + Date.now());
-
+//Middleware for single request
+router.use('/singlemid', function (req, res, next) {
+    console.log("Single request " + Date.now());
     next();
 });
 
+router.get('/singlemid', function (req, res) {
+    res.send('Things');
+});
+
+// -----------------------------------------------------
 
 //Middleware for all requests - WORKS
-router.use(function(req, res, next){
+router.use(function (req, res, next) {
     console.log("A new request received at " + Date.now());
     res.on("finish", function () {
     });
@@ -19,21 +23,21 @@ router.use(function(req, res, next){
     next();
 });
 
-router.get('/', function(req, res){
+router.get('/', function (req, res) {
     res.send('GET route on things.');
 });
 
-router.post('/', function(req, res){
+router.post('/', function (req, res) {
     res.send('POST route on things.');
 });
 
-router.get('/:id', function(req, res){
+router.get('/:id', function (req, res) {
     res.send("The id you specified is " + req.params.id);
 });
 
 // regEx --> regular expressions
 // nie dziala :(
-router.get('/things/:id([0-9]{5})', function(req, res){
+router.get('/things/:id([0-9]{5})', function (req, res) {
     res.send('id: ' + req.params.id);
 });
 
